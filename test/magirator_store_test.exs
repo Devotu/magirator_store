@@ -1,4 +1,4 @@
-defmodule IdStoreTest do
+defmodule MagiratorStoreTest do
   use ExUnit.Case
   
   import MagiratorStore
@@ -104,5 +104,12 @@ defmodule IdStoreTest do
     { status, id } = add_result( result2 )
     assert :ok == status
     assert is_number id
+  end
+
+  test "List results" do
+    { status, data } = list_results_by_deck 20
+    assert :ok == status
+    assert Enum.count(data) > 0
+    assert Enum.at(data, 0) |> Map.has_key?(:place)
   end
 end

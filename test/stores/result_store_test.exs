@@ -12,7 +12,7 @@ defmodule ResultStoreTest do
       place: 3,
       comment: "ResultStore.create"
     }
-    { status, id } = create( result )
+    { status, id } = add( result )
     assert :ok == status
     assert is_number id
   end

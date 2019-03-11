@@ -9,7 +9,7 @@ defmodule GameStoreTest do
     game = %Game{ 
       conclusion: "VICTORY", 
       created: System.system_time(:second), 
-      creator: 10,
+      creator_id: 10,
     }
     { status, id } = create( game )
     assert :ok == status

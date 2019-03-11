@@ -12,11 +12,11 @@ defmodule MagiratorStore.Structs.Deck do
     colorless:  :false,
   )
 
-  def mapHasValidValues?(%{} = map) do
+  def map_has_valid_values?(%{} = map) do
     :true
   end
 
-  def mapHasValidValues?(_) do
+  def map_has_valid_values?(_) do
     :false
   end
 end

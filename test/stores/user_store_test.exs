@@ -1,7 +1,7 @@
 defmodule UserStoreTest do
   use ExUnit.Case
   
-  import MagiratorStore.UserStore
+  import MagiratorStore.Stores.UserStore
 
   test "get user" do
     {:ok, user} = select_by_name("Adam")

@@ -17,4 +17,5 @@ defmodule MagiratorStore do
   defdelegate create_game(game), to: GameStore, as: :create
 
   defdelegate add_result(result), to: ResultStore, as: :add
+  defdelegate list_results_by_deck(deck_id), to: ResultStore, as: :select_all_by_deck
 end

@@ -111,7 +111,7 @@ defmodule MagiratorStore.Stores.DeckStore do
   defp node_to_deck( node ) do
     merged = Map.merge( node["d"].properties, node["data"].properties )
   
-    if Deck.mapHasValidValues? merged do
+    if Deck.map_has_valid_values? merged do
       Helpers.atomize_keys merged
     else
       { :error, :invalid_data }

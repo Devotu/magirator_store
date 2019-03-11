@@ -1,7 +1,8 @@
 defmodule MagiratorStore.Stores.ResultStore do
 
   alias Bolt.Sips, as: Bolt
-  alias MagiratorStore.Result
+  alias MagiratorStore.Structs.Result
+  alias MagiratorStore.Helpers
 
   import MagiratorStore.Stores.IdStore
   import Ecto.Changeset
@@ -46,6 +47,22 @@ defmodule MagiratorStore.Stores.ResultStore do
   end
 
 
+  def select_all_by_deck( deck_id ) do
+
+    query = """
+    MATCH 
+      (r:Result)-[:With]->(d:Deck)
+    WHERE 
+      d.id = #{ deck_id } 
+    RETURN 
+      r
+    """
+    
+    Bolt.query!(Bolt.conn, query)
+    |> nodes_to_results
+    |> Helpers.return_as_tuple
+  end
+
 
   #Helpers
   defp nodes_to_results( nodes ) do
@@ -53,11 +70,10 @@ defmodule MagiratorStore.Stores.ResultStore do
   end
 
   defp node_to_result( node ) do
+    result_map = node["r"].properties
 
-    result_changeset = Result.changeset( %Result{}, node["r"].properties )
-
-    if result_changeset.valid? do
-      apply_changes result_changeset
+    if Result.map_has_valid_values? result_map do
+      Helpers.atomize_keys result_map
     else
       { :error, :invalid_data }
     end
