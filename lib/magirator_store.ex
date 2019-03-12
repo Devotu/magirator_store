@@ -6,6 +6,7 @@ defmodule MagiratorStore do
   alias MagiratorStore.Stores.ResultStore
 
   defdelegate create_user(name, password), to: UserStore, as: :create
+  defdelegate get_by_name(user_name), to: UserStore, as: :select_by_name
 
   defdelegate create_player(name, user_is), to: PlayerStore, as: :create
   defdelegate list_players(), to: PlayerStore, as: :select_all
