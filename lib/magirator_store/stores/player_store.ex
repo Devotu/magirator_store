@@ -54,6 +54,23 @@ defmodule MagiratorStore.Stores.PlayerStore do
   end
 
 
+  def select_by_id( player_id ) do
+
+    query = """
+    MATCH 
+      (p:Player)-[:Currently]->(data:Data) 
+    WHERE 
+      p.id = #{ player_id } 
+    RETURN 
+      p, data
+    """
+    
+    Bolt.query!(Bolt.conn, query)
+    |> nodes_to_players
+    |> Helpers.return_expected_single
+  end
+
+
   #Helpers
   defp nodes_to_players( nodes ) do
       Enum.map( nodes, &node_to_player/1 )
