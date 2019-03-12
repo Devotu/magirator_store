@@ -51,11 +51,16 @@ defmodule MagiratorStore.Stores.ResultStore do
 
     query = """
     MATCH 
-      (r:Result)-[:With]->(d:Deck)
+      (p:Player)-[:Got]->
+      (r:Result)-[:With]->(d:Deck),
+      (r)-[:In]->(g:Game)
     WHERE 
       d.id = #{ deck_id } 
     RETURN 
-      r
+      r, 
+      p.id AS player_id, 
+      d.id AS deck_id, 
+      g.id AS game_id 
     """
     
     Bolt.query!(Bolt.conn, query)
@@ -70,10 +75,15 @@ defmodule MagiratorStore.Stores.ResultStore do
   end
 
   defp node_to_result( node ) do
-    result_map = node["r"].properties
+    result = node["r"].properties
+    player_id = node["player_id"]
+    deck_id = node["player_id"]
+    game_id = node["player_id"]
 
-    if Result.map_has_valid_values? result_map do
-      Helpers.atomize_keys result_map
+    merged = Map.merge( %{"player_id" => player_id, "deck_id" => deck_id, "game_id" => game_id}, result )
+
+    if Result.map_has_valid_values? merged do
+      Helpers.atomize_keys merged
     else
       { :error, :invalid_data }
     end
