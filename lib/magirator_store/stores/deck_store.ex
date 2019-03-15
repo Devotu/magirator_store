@@ -17,7 +17,7 @@ defmodule MagiratorStore.Stores.DeckStore do
         p.id = #{ player_id } 
       CREATE  
       (p) 
-        -[:Created]-> 
+        -[:Constructed]-> 
       (n:Deck:Active:PERSISTENT { id:#{ generated_id } } )  
         -[:Currently]-> 
       (d:Data {  
@@ -47,7 +47,7 @@ defmodule MagiratorStore.Stores.DeckStore do
     end
   end
 
-  def create( _, player_id ) do
+  def create( _, _player_id ) do
     { :error, :only_struct }
   end
 
@@ -56,7 +56,7 @@ defmodule MagiratorStore.Stores.DeckStore do
 
     query = """
     MATCH 
-      (p:Player)-[:Created]->(d:Deck)
+      (p:Player)-[:Constructed]->(d:Deck)
       -[:Currently]->(data:Data) 
     WHERE 
       p.id = #{ player_id } 

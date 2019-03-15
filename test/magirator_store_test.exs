@@ -5,6 +5,7 @@ defmodule MagiratorStoreTest do
   alias MagiratorStore.Structs.Deck
   alias MagiratorStore.Structs.Game
   alias MagiratorStore.Structs.Result
+  alias MagiratorStore.Structs.Match
 
 
   test "Create deck" do
@@ -80,7 +81,7 @@ defmodule MagiratorStoreTest do
   end
 
 
-  test "Add result" do
+  test "Add results" do
     result1 = %Result{
         game_id: 42,
         player_id: 12,
@@ -111,5 +112,52 @@ defmodule MagiratorStoreTest do
     assert :ok == status
     assert Enum.count(data) > 0
     assert Enum.at(data, 0) |> Map.has_key?(:place)
+  end
+
+
+  test "Create match" do
+    match = %Match{
+      created: System.system_time(:second), 
+      creator_id: 12,
+    }
+    { status, mid } = create_match( match )
+    assert :ok == status
+    assert is_number mid
+
+    game = %Game{ 
+      conclusion: "VICTORY", 
+      created: System.system_time(:second), 
+      creator_id: 12,
+    }
+    { status, gid } = create_game( game )
+    assert :ok == status
+    assert is_number gid
+
+    { status } = add_game_to_match( gid, mid )
+    assert :ok == status
+
+    result1 = %Result{
+        game_id: gid,
+        player_id: 12,
+        deck_id: 23,
+        place: 1,
+        comment: "Add result 1 to match"
+      }
+
+    { status, rid1 } = add_result( result1 )
+    assert :ok == status
+    assert is_number rid1
+
+    result2 = %Result{
+        game_id: gid,
+        player_id: 10,
+        deck_id: 20,
+        place: 2,
+        comment: "Add result 2 to match"
+      }
+
+    { status, rid2 } = add_result( result2 )
+    assert :ok == status
+    assert is_number rid2
   end
 end

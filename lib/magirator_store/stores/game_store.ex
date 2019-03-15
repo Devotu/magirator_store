@@ -1,10 +1,8 @@
 defmodule MagiratorStore.Stores.GameStore do
 
   alias Bolt.Sips, as: Bolt
-  alias MagiratorStore.Deck
 
   import MagiratorStore.Stores.IdStore
-  import Ecto.Changeset
 
   def create( game ) do
     
