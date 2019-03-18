@@ -1,6 +1,7 @@
 defmodule MagiratorStore.Stores.GameStore do
 
   alias Bolt.Sips, as: Bolt
+  alias MagiratorStore.Helpers
 
   import MagiratorStore.Stores.IdStore
 
@@ -31,4 +32,30 @@ defmodule MagiratorStore.Stores.GameStore do
     end
   end
 
+  def select_all_by_match( match_id ) do
+
+    query = """
+    MATCH 
+      (m:Match)-[:Contains]->(g:Game)
+    WHERE 
+      m.id = #{ match_id } 
+    RETURN 
+      g
+    """
+    
+    Bolt.query!(Bolt.conn, query)
+    |> nodes_to_games
+    |> Helpers.return_as_tuple
+  end
+  
+
+  #Helpers
+  defp nodes_to_games( nodes ) do
+      Enum.map( nodes, &node_to_game/1 )
+  end
+
+  defp node_to_game( node ) do
+    node["g"].properties
+    |> Helpers.atomize_keys
+  end
 end

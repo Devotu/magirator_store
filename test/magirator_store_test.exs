@@ -160,4 +160,17 @@ defmodule MagiratorStoreTest do
     assert :ok == status
     assert is_number rid2
   end
+
+  test "get match" do
+    { status, data } = get_match(50)
+    assert :ok == status
+    assert data.id == 50
+  end
+
+  test "select games in match" do
+    { status, data } = get_games_in_match(50)
+    assert :ok == status
+    assert is_list data
+    assert not Enum.empty? data
+  end
 end

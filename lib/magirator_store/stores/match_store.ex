@@ -1,6 +1,7 @@
 defmodule MagiratorStore.Stores.MatchStore do
 
   alias Bolt.Sips, as: Bolt
+  alias MagiratorStore.Helpers
 
   import MagiratorStore.Stores.IdStore
 
@@ -57,5 +58,33 @@ defmodule MagiratorStore.Stores.MatchStore do
       :false ->
         { :error, :insert_failure }
     end
+  end
+
+
+  def select_by_id( match_id ) do
+
+    query = """
+    MATCH 
+      (m:Match)  
+    WHERE 
+      m.id = #{ match_id } 
+    RETURN 
+      m
+    """
+    
+    Bolt.query!(Bolt.conn, query)
+    |> nodes_to_matches
+    |> Helpers.return_expected_single
+  end
+
+
+  #Helpers
+  defp nodes_to_matches( nodes ) do
+      Enum.map( nodes, &node_to_match/1 )
+  end
+
+  defp node_to_match( node ) do
+    node["m"].properties
+    |> Helpers.atomize_keys
   end
 end
