@@ -114,6 +114,13 @@ defmodule MagiratorStoreTest do
     assert Enum.at(data, 0) |> Map.has_key?(:place)
   end
 
+  test "Get results in game" do
+    { status, data } = list_results_by_game 40
+    assert :ok == status
+    assert Enum.count(data) > 0
+    assert Enum.at(data, 0) |> Map.has_key?(:place)
+  end
+
 
   test "Create match" do
     match = %Match{

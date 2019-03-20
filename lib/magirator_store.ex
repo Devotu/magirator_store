@@ -22,6 +22,7 @@ defmodule MagiratorStore do
 
   defdelegate add_result(result), to: ResultStore, as: :add
   defdelegate list_results_by_deck(deck_id), to: ResultStore, as: :select_all_by_deck
+  defdelegate list_results_by_game(game_id), to: ResultStore, as: :select_all_by_game
 
   defdelegate create_match(match), to: MatchStore, as: :create
   defdelegate get_match(match_id), to: MatchStore, as: :select_by_id
