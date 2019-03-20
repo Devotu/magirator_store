@@ -99,8 +99,8 @@ defmodule MagiratorStore.Stores.ResultStore do
   defp node_to_result( node ) do
     result = node["r"].properties
     player_id = node["player_id"]
-    deck_id = node["player_id"]
-    game_id = node["player_id"]
+    deck_id = node["deck_id"]
+    game_id = node["game_id"]
 
     merged = Map.merge( %{"player_id" => player_id, "deck_id" => deck_id, "game_id" => game_id}, result )
 

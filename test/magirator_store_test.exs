@@ -112,6 +112,9 @@ defmodule MagiratorStoreTest do
     assert :ok == status
     assert Enum.count(data) > 0
     assert Enum.at(data, 0) |> Map.has_key?(:place)
+    assert Enum.at(data, 0) |> Map.has_key?(:player_id)
+    assert Enum.at(data, 0) |> Map.has_key?(:deck_id)
+    assert Enum.at(data, 0) |> Map.has_key?(:game_id)
   end
 
   test "Get results in game" do
@@ -119,6 +122,10 @@ defmodule MagiratorStoreTest do
     assert :ok == status
     assert Enum.count(data) > 0
     assert Enum.at(data, 0) |> Map.has_key?(:place)
+    assert Enum.at(data, 0) |> Map.has_key?(:place)
+    assert Enum.at(data, 0) |> Map.has_key?(:player_id)
+    assert Enum.at(data, 0) |> Map.has_key?(:deck_id)
+    assert Enum.at(data, 0) |> Map.has_key?(:game_id)
   end
 
 
