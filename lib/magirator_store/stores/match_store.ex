@@ -9,15 +9,22 @@ defmodule MagiratorStore.Stores.MatchStore do
     
     { :ok, generated_id } = next_id()
 
+    [player_one_id, player_two_id] = match.players
+
     query = """
       MATCH 
-        (p:Player) 
+        (pc:Player),
+        (p1:Player),
+        (p2:Player)
       WHERE 
-        p.id = #{ match.creator_id } 
+        pc.id = #{ match.creator_id } AND 
+        p1.id = #{ player_one_id } AND
+        p2.id = #{ player_two_id } 
       CREATE 
-        (p)-[:Created]->(g:Match { id:#{ generated_id }, created:TIMESTAMP() })
+        (pc)-[:Created]->(m:Match { id:#{ generated_id }, created:TIMESTAMP() }),
+        (p1)-[:Participated { player: 1} ]->(m)<-[:Participated { player: 2} ]-(p2)
       RETURN 
-        g.id as id;
+        m.id as id;
     """
     
     result = Bolt.query!(Bolt.conn, query)
@@ -56,7 +63,8 @@ defmodule MagiratorStore.Stores.MatchStore do
       :true ->
         { :ok }
       :false ->
-        { :error, :insert_failure }
+        { :error, {match_id, updated_id} }
+        # { :error, :insert_failure }
     end
   end
 
