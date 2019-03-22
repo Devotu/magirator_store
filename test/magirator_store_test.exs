@@ -6,6 +6,7 @@ defmodule MagiratorStoreTest do
   alias MagiratorStore.Structs.Game
   alias MagiratorStore.Structs.Result
   alias MagiratorStore.Structs.Match
+  alias MagiratorStore.Structs.Participant
 
 
   test "Create deck" do
@@ -133,6 +134,18 @@ defmodule MagiratorStoreTest do
     match = %Match{
       created: System.system_time(:second), 
       creator_id: 12,
+      participants: [
+        %Participant{
+          player_id: 12, 
+          deck_id: 23, 
+          number: 1
+        },
+        %Participant{
+          player_id: 11, 
+          deck_id: 22, 
+          number: 2
+        }
+      ]
     }
     { status, mid } = create_match( match )
     assert :ok == status
