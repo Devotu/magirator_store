@@ -133,59 +133,11 @@ defmodule MagiratorStoreTest do
   test "Create match" do
     match = %Match{
       created: System.system_time(:second), 
-      creator_id: 12,
-      participants: [
-        %Participant{
-          player_id: 12, 
-          deck_id: 23, 
-          number: 1
-        },
-        %Participant{
-          player_id: 11, 
-          deck_id: 22, 
-          number: 2
-        }
-      ]
+      creator_id: 12
     }
     { status, mid } = create_match( match )
     assert :ok == status
     assert is_number mid
-
-    game = %Game{ 
-      conclusion: "VICTORY", 
-      created: System.system_time(:second), 
-      creator_id: 12,
-    }
-    { status, gid } = create_game( game )
-    assert :ok == status
-    assert is_number gid
-
-    { status } = add_game_to_match( gid, mid )
-    assert :ok == status
-
-    result1 = %Result{
-        game_id: gid,
-        player_id: 12,
-        deck_id: 23,
-        place: 1,
-        comment: "Add result 1 to match"
-      }
-
-    { status, rid1 } = add_result( result1 )
-    assert :ok == status
-    assert is_number rid1
-
-    result2 = %Result{
-        game_id: gid,
-        player_id: 10,
-        deck_id: 20,
-        place: 2,
-        comment: "Add result 2 to match"
-      }
-
-    { status, rid2 } = add_result( result2 )
-    assert :ok == status
-    assert is_number rid2
   end
 
   test "get match" do
@@ -199,5 +151,30 @@ defmodule MagiratorStoreTest do
     assert :ok == status
     assert is_list data
     assert not Enum.empty? data
+  end
+
+
+  test "create participant" do
+    participant = %Participant{
+      player_id: 12, 
+      deck_id: 23, 
+      number: 1
+    }
+    { status, id } = create_participant(participant, 50)
+    assert :ok == status
+    assert is_number id
+  end
+
+  test "select participants in match" do
+    { status, data } = list_participants_by_match(50)
+    assert :ok == status
+    assert is_list data
+    assert not Enum.empty? data
+  end
+
+
+  test "add game to match" do
+    { status } = add_game_to_match( 40, 50 )
+    assert :ok == status
   end
 end
