@@ -1,6 +1,7 @@
 defmodule MagiratorStore.Structs.Deck do
   
   defstruct(
+    id: 0,
     name:   "",
     theme:  "",
     format: "",

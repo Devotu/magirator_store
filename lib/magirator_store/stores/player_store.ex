@@ -17,7 +17,7 @@ defmodule MagiratorStore.Stores.PlayerStore do
       CREATE 
         (u)
         -[:Is]->
-        (p:Player:ActivePERSISTENT { id:#{ generated_id } }) 
+        (p:Player:Active:PERSISTENT { id:#{ generated_id } }) 
         -[:Currently]-> 
         (d:Data { created:TIMESTAMP(), name:"#{ name }" })
       RETURN 

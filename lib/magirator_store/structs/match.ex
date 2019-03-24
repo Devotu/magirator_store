@@ -1,4 +1,4 @@
 defmodule MagiratorStore.Structs.Match do
   
-  defstruct created: "", creator_id: 0
+  defstruct id: 0, created: "", creator_id: 0
 end
