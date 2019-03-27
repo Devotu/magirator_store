@@ -47,6 +47,26 @@ defmodule MagiratorStore.Stores.ResultStore do
   end
 
 
+  def select_all() do
+
+    query = """
+    MATCH 
+      (p:Player)-[:Got]->
+      (r:Result)-[:With]->(d:Deck),
+      (r)-[:In]->(g:Game)
+    RETURN 
+      r, 
+      p.id AS player_id, 
+      d.id AS deck_id, 
+      g.id AS game_id 
+    """
+    
+    Bolt.query!(Bolt.conn, query)
+    |> nodes_to_results
+    |> Helpers.return_as_tuple
+  end
+
+
   def select_all_by_deck( deck_id ) do
 
     query = """

@@ -109,24 +109,33 @@ defmodule MagiratorStoreTest do
   end
 
   test "List results" do
+    { status, data } = list_results
+    assert :ok == status
+    assert Enum.count(data) > 0
+    assert List.first(data) |> Map.has_key?(:place)
+    assert List.first(data) |> Map.has_key?(:player_id)
+    assert List.first(data) |> Map.has_key?(:deck_id)
+    assert List.first(data) |> Map.has_key?(:game_id)
+  end
+
+  test "List results by deck" do
     { status, data } = list_results_by_deck 20
     assert :ok == status
     assert Enum.count(data) > 0
-    assert Enum.at(data, 0) |> Map.has_key?(:place)
-    assert Enum.at(data, 0) |> Map.has_key?(:player_id)
-    assert Enum.at(data, 0) |> Map.has_key?(:deck_id)
-    assert Enum.at(data, 0) |> Map.has_key?(:game_id)
+    assert List.first(data) |> Map.has_key?(:place)
+    assert List.first(data) |> Map.has_key?(:player_id)
+    assert List.first(data) |> Map.has_key?(:deck_id)
+    assert List.first(data) |> Map.has_key?(:game_id)
   end
 
   test "Get results in game" do
     { status, data } = list_results_by_game 40
     assert :ok == status
     assert Enum.count(data) > 0
-    assert Enum.at(data, 0) |> Map.has_key?(:place)
-    assert Enum.at(data, 0) |> Map.has_key?(:place)
-    assert Enum.at(data, 0) |> Map.has_key?(:player_id)
-    assert Enum.at(data, 0) |> Map.has_key?(:deck_id)
-    assert Enum.at(data, 0) |> Map.has_key?(:game_id)
+    assert List.first(data) |> Map.has_key?(:place)
+    assert List.first(data) |> Map.has_key?(:player_id)
+    assert List.first(data) |> Map.has_key?(:deck_id)
+    assert List.first(data) |> Map.has_key?(:game_id)
   end
 
 
@@ -176,5 +185,19 @@ defmodule MagiratorStoreTest do
   test "add game to match" do
     { status } = add_game_to_match( 40, 50 )
     assert :ok == status
+  end
+
+
+  test "Exctract game frames by deck" do
+    { status, data } = extract_game_frames_by_deck 20
+    assert :ok == status
+    assert Enum.count(data) > 0
+    assert List.first(data) |> Map.has_key?(:game_id)
+    assert List.first(data) |> Map.has_key?(:player_one_id)
+    assert List.first(data) |> Map.has_key?(:player_one_result_id)
+    assert List.first(data) |> Map.has_key?(:player_one_deck_id)
+    assert List.first(data) |> Map.has_key?(:player_two_id)
+    assert List.first(data) |> Map.has_key?(:player_two_result_id)
+    assert List.first(data) |> Map.has_key?(:player_two_deck_id)
   end
 end
