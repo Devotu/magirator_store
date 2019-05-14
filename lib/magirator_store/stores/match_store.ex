@@ -72,6 +72,29 @@ defmodule MagiratorStore.Stores.MatchStore do
   end
 
 
+  def delete( match_id ) do
+
+    query = """
+    MATCH 
+      (m:Match),
+      (m)-[:Contains]->(g:Game)<-[:In]-(r:Result),
+      (m)<-[:In]-(p:Participant)
+    WHERE 
+      m.id = #{ match_id } 
+    DETACH DELETE m,g,r,p
+    """
+
+    result = Bolt.query!(Bolt.conn, query)
+
+    case result["nodes-deleted"] do
+      n when n > 0 ->
+        {:ok}
+      _ ->
+        {:error, "no nodes deleted"}        
+    end
+  end
+
+
   #Helpers
   defp nodes_to_matches( nodes ) do
       Enum.map( nodes, &node_to_match/1 )

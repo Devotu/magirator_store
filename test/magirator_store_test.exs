@@ -109,7 +109,7 @@ defmodule MagiratorStoreTest do
   end
 
   test "List results" do
-    { status, data } = list_results
+    { status, data } = list_results()
     assert :ok == status
     assert Enum.count(data) > 0
     assert List.first(data) |> Map.has_key?(:place)
@@ -184,6 +184,12 @@ defmodule MagiratorStoreTest do
 
   test "add game to match" do
     { status } = add_game_to_match( 40, 50 )
+    assert :ok == status
+  end
+
+
+  test "delete match" do
+    { status } = delete_match( 51 )
     assert :ok == status
   end
 

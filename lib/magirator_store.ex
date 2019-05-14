@@ -30,6 +30,7 @@ defmodule MagiratorStore do
   defdelegate create_match(match), to: MatchStore, as: :create
   defdelegate get_match(match_id), to: MatchStore, as: :select_by_id
   defdelegate add_game_to_match(game_id, match_id), to: MatchStore, as: :add_game
+  defdelegate delete_match(match_id), to: MatchStore, as: :delete
 
   defdelegate create_participant(participant, match_id), to: ParticipantStore, as: :create 
   defdelegate list_participants_by_match(match_id), to: ParticipantStore, as: :select_all_by_match
