@@ -22,7 +22,7 @@ defmodule MagiratorStore.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:bolt_sips, "~> 0.4.12"},
+      {:bolt_sips, "~> 1.5"},
       {:ecto, "~> 3.0"},
     ]
   end
