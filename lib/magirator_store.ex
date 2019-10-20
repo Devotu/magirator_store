@@ -34,6 +34,4 @@ defmodule MagiratorStore do
 
   defdelegate create_participant(participant, match_id), to: ParticipantStore, as: :create 
   defdelegate list_participants_by_match(match_id), to: ParticipantStore, as: :select_all_by_match
-
-  defdelegate extract_game_frames_by_deck(deck_id), to: FrameStore, as: :select_all_game_by_deck
 end
