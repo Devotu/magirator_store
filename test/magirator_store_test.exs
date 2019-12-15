@@ -192,18 +192,4 @@ defmodule MagiratorStoreTest do
     { status } = delete_match( 51 )
     assert :ok == status
   end
-
-
-  test "Exctract game frames by deck" do
-    { status, data } = extract_game_frames_by_deck 20
-    assert :ok == status
-    assert Enum.count(data) > 0
-    assert List.first(data) |> Map.has_key?(:game_id)
-    assert List.first(data) |> Map.has_key?(:player_one_id)
-    assert List.first(data) |> Map.has_key?(:player_one_result_id)
-    assert List.first(data) |> Map.has_key?(:player_one_deck_id)
-    assert List.first(data) |> Map.has_key?(:player_two_id)
-    assert List.first(data) |> Map.has_key?(:player_two_result_id)
-    assert List.first(data) |> Map.has_key?(:player_two_deck_id)
-  end
 end
