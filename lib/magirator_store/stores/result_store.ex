@@ -3,6 +3,7 @@ defmodule MagiratorStore.Stores.ResultStore do
   alias Bolt.Sips, as: Bolt
   alias MagiratorStore.Structs.Result
   alias MagiratorStore.Helpers
+  alias MagiratorStore.NeoHelper
 
   import MagiratorStore.Stores.IdStore
   import Ecto.Changeset
@@ -46,6 +47,27 @@ defmodule MagiratorStore.Stores.ResultStore do
     end
   end
 
+
+  def select_all(tags) when is_list tags do
+
+    tag_labels = NeoHelper.as_labels(tags)
+
+    query = """
+    MATCH 
+      (p:Player)-[:Got]->
+      (r:Result)-[:With]->(d:Deck),
+      (r)-[:In]->(g:Game#{tag_labels})
+    RETURN 
+      r, 
+      p.id AS player_id, 
+      d.id AS deck_id, 
+      g.id AS game_id 
+    """
+    
+    Bolt.query!(Bolt.conn, query)
+    |> nodes_to_results
+    |> Helpers.return_as_tuple
+  end
 
   def select_all() do
 

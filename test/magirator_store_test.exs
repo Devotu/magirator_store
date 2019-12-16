@@ -41,6 +41,7 @@ defmodule MagiratorStoreTest do
       conclusion: "VICTORY", 
       created: System.system_time(:second), 
       creator_id: 10,
+      tags: [:tier, :arena]
     }
     { status, id } = create_game( game )
     assert :ok == status
@@ -191,5 +192,25 @@ defmodule MagiratorStoreTest do
   test "delete match" do
     { status } = delete_match( 51 )
     assert :ok == status
+  end
+
+
+  test "List tier results" do
+    { status, data } = list_results([:tier])
+    assert :ok == status
+    assert Enum.count(data) >= 2
+    assert List.first(data) |> Map.has_key?(:place)
+    assert List.first(data) |> Map.has_key?(:player_id)
+    assert List.first(data) |> Map.has_key?(:deck_id)
+    assert List.first(data) |> Map.has_key?(:game_id)
+  end
+
+  alias MagiratorStore.NeoHelper
+  test "neo-tags" do
+    assert [":TIER"] == NeoHelper.as_labels [:tier]
+  end
+
+  test "neo-tag-line" do
+    assert ":TIER:ARENA" == NeoHelper.as_label_line [:tier, :arena]
   end
 end

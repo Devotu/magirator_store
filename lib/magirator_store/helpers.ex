@@ -53,4 +53,13 @@ defmodule MagiratorStore.Helpers do
     { created_id } = { row["id"] }
     created_id
   end
+
+
+  def only_atoms(list) when is_list list do
+    Enum.map(list, &only_atom/1)
+  end
+
+  def only_atom(x) when is_atom x do
+    x
+  end
 end

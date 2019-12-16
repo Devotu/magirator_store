@@ -2,6 +2,7 @@ defmodule MagiratorStore.Stores.GameStore do
 
   alias Bolt.Sips, as: Bolt
   alias MagiratorStore.Helpers
+  alias MagiratorStore.NeoHelper
 
   import MagiratorStore.Stores.IdStore
 
@@ -9,13 +10,15 @@ defmodule MagiratorStore.Stores.GameStore do
     
     { :ok, generated_id } = next_id()
 
+    tags = NeoHelper.as_label_line(game.tags)
+
     query = """
       MATCH 
         (p:Player) 
       WHERE 
         p.id = #{ game.creator_id } 
       CREATE 
-        (p)-[:Created]->(g:Game { id:#{ generated_id }, created:TIMESTAMP(), conclusion: "#{ game.conclusion }" })
+        (p)-[:Created]->(g:Game#{tags} { id:#{ generated_id }, created:TIMESTAMP(), conclusion: "#{ game.conclusion }" })
       RETURN 
         g.id as id;
     """
