@@ -11,6 +11,8 @@ defmodule MagiratorStore.Structs.Deck do
     green:  :false,
     blue:  :false,
     colorless:  :false,
+    tier: 0, 
+    delta: 0,
   )
 
   def map_has_valid_values?(%{} = map) do
