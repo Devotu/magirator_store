@@ -205,7 +205,22 @@ defmodule MagiratorStoreTest do
     assert List.first(data) |> Map.has_key?(:game_id)
   end
 
+
+  test "update deck tier success" do
+    assert :ok = update_deck_tier(20, %{tier: 0, delta: 1})
+    assert :ok = update_deck_tier(20, %{tier: -1, delta: -1})
+    assert :ok = update_deck_tier(20, %{tier: 2, delta: -1})
   end
 
+  test "update deck tier failure" do #should also be :ok as the logic should not be in the storage
+    assert :ok = update_deck_tier(20, %{tier: 0, delta: 2})
+    assert :ok = update_deck_tier(20, %{tier: 2, delta: 2})
+    assert :ok = update_deck_tier(20, %{tier: -2, delta: -2})
+  end
+
+  test "update deck tier actual failure" do #but the accepted value types will be checked
+    # assert :error = update_deck_tier("20", %{tier: 0, delta: 2})
+    # assert :error = update_deck_tier(20, %{tier: "2", delta: 2})
+    # assert :error = update_deck_tier(20, %{tier: -2, delta: "-2"})
   end
 end

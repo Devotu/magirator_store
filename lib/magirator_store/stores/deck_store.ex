@@ -53,7 +53,6 @@ defmodule MagiratorStore.Stores.DeckStore do
 
 
   def select_all_by_player( player_id ) do
-
     query = """
     MATCH 
       (p:Player)-[:Constructed]->(d:Deck)
@@ -71,7 +70,6 @@ defmodule MagiratorStore.Stores.DeckStore do
 
 
   def select_by_id( deck_id ) do
-
     query = """
     MATCH 
       (d:Deck)-[:Currently]->(data:Data) 
@@ -88,7 +86,6 @@ defmodule MagiratorStore.Stores.DeckStore do
 
 
   def select_all() do
-
     query = """
     MATCH 
       (d:Deck)-[:Currently]->(data:Data) 
@@ -96,10 +93,25 @@ defmodule MagiratorStore.Stores.DeckStore do
       d, data
     """
     
-    
     Bolt.query!(Bolt.conn, query)
     |> nodes_to_decks
     |> Helpers.return_as_tuple
+  end
+
+
+  def update_tier(deck_id, %{tier: tier, delta: delta}) when is_number (deck_id + tier + delta) do
+    query = """
+    MATCH 
+      (d:Deck) 
+    WHERE 
+      d.id = #{deck_id}
+    SET 
+      d.tier = #{tier}
+      ,d.delta = #{delta}
+    """
+
+    Bolt.query!(Bolt.conn, query)
+    |> Helpers.update_evaluation(2)
   end
 
 
@@ -117,5 +129,4 @@ defmodule MagiratorStore.Stores.DeckStore do
       { :error, :invalid_data }
     end
   end
-
 end
