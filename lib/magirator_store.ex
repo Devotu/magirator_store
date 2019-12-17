@@ -6,7 +6,6 @@ defmodule MagiratorStore do
   alias MagiratorStore.Stores.ResultStore
   alias MagiratorStore.Stores.MatchStore
   alias MagiratorStore.Stores.ParticipantStore
-  alias MagiratorStore.Stores.FrameStore
 
   defdelegate create_user(name, password), to: UserStore, as: :create
   defdelegate get_by_name(user_name), to: UserStore, as: :select_by_name
@@ -18,6 +17,7 @@ defmodule MagiratorStore do
   defdelegate create_deck(deck, player_id), to: DeckStore, as: :create
   defdelegate list_decks(), to: DeckStore, as: :select_all
   defdelegate get_deck(deck_id), to: DeckStore, as: :select_by_id
+  defdelegate update_deck_tier(deck_id, new_state), to: DeckStore, as: :update_tier
   
   defdelegate create_game(game), to: GameStore, as: :create
   defdelegate get_games_in_match(match_id), to: GameStore, as: :select_all_by_match

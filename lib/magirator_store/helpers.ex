@@ -62,4 +62,12 @@ defmodule MagiratorStore.Helpers do
   def only_atom(x) when is_atom x do
     x
   end
+
+
+  def update_evaluation(%{stats: stats}, expect_updated) do
+    case stats["properties-set"] == expect_updated do
+      :true -> :ok
+      _ -> {:error, :unexpected_result}
+    end
+  end
 end
