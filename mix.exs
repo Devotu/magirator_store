@@ -23,7 +23,6 @@ defmodule MagiratorStore.MixProject do
   defp deps do
     [
       {:bolt_sips, "~> 1.5"},
-      {:ecto, "~> 3.0"},
     ]
   end
 end

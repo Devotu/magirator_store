@@ -1,5 +1,4 @@
 defmodule MagiratorStore.NeoHelper do
-  alias MagiratorStore.Helpers
 
   def as_labels(params) do
     params

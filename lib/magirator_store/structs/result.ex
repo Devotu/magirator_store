@@ -9,7 +9,7 @@ defmodule MagiratorStore.Structs.Result do
     comment: ""
   ) 
 
-  def map_has_valid_values?(%{} = map) do
+  def map_has_valid_values?(%{} = _map) do
     :true
   end
 

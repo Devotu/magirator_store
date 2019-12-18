@@ -6,7 +6,6 @@ defmodule MagiratorStore.Stores.ResultStore do
   alias MagiratorStore.NeoHelper
 
   import MagiratorStore.Stores.IdStore
-  import Ecto.Changeset
 
   def add( result ) do
     

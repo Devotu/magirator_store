@@ -1,7 +1,6 @@
 defmodule DeckStoreTest do
   use ExUnit.Case
 
-  import Ecto.Changeset
   import MagiratorStore.Stores.DeckStore
   alias MagiratorStore.Structs.Deck
 
@@ -53,7 +52,7 @@ defmodule DeckStoreTest do
 
   #all
   test "Select all decks" do
-    { status, data } = select_all
+    { status, data } = select_all()
     assert :ok == status
     assert is_list data
     assert not Enum.empty? data
