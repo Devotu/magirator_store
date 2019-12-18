@@ -124,7 +124,7 @@ defmodule MagiratorStore.Stores.DeckStore do
     merged = Map.merge( node["d"].properties, node["data"].properties )
   
     if Deck.map_has_valid_values? merged do
-      Helpers.atomize_keys merged
+      struct(Deck, Helpers.atomize_keys merged)
     else
       { :error, :invalid_data }
     end

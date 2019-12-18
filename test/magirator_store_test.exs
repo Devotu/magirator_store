@@ -63,6 +63,14 @@ defmodule MagiratorStoreTest do
     assert data.delta == 1
   end
 
+  test "Select deck by id without tier (and delta)" do
+    { status, data } = get_deck 22
+    assert :ok == status
+    assert data.name == "Deck 3"
+    assert data.tier == 0
+    assert data.delta == 0
+  end
+
   test "Select deck not exist" do
     { status, msg } = get_deck 99
     assert :error == status
