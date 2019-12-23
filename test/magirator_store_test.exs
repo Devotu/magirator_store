@@ -159,7 +159,8 @@ defmodule MagiratorStoreTest do
   test "Create match" do
     match = %Match{
       created: System.system_time(:second), 
-      creator_id: 12
+      creator_id: 12,
+      tags: [:tier]
     }
     { status, mid } = create_match( match )
     assert :ok == status
@@ -170,6 +171,7 @@ defmodule MagiratorStoreTest do
     { status, data } = get_match(50)
     assert :ok == status
     assert data.id == 50
+    assert data.tags == [:tier]
   end
 
   test "select games in match" do

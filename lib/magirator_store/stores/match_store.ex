@@ -2,12 +2,14 @@ defmodule MagiratorStore.Stores.MatchStore do
 
   alias Bolt.Sips, as: Bolt
   alias MagiratorStore.Helpers
+  alias MagiratorStore.NeoHelper
+  alias MagiratorStore.Structs.Match
 
   import MagiratorStore.Stores.IdStore
 
   def create( match ) do
-    
     { :ok, generated_id } = next_id()
+    tags = NeoHelper.as_label_line(match.tags)
 
     query = """
       MATCH 
@@ -15,7 +17,7 @@ defmodule MagiratorStore.Stores.MatchStore do
       WHERE 
         pc.id = #{ match.creator_id }
       CREATE 
-        (pc)-[:Created]->(m:Match { id:#{ generated_id }, created:TIMESTAMP() })
+        (pc)-[:Created]->(m:Match#{tags} { id:#{ generated_id }, created:TIMESTAMP() })
       RETURN 
         m.id as id;
     """
@@ -101,7 +103,11 @@ defmodule MagiratorStore.Stores.MatchStore do
   end
 
   defp node_to_match( node ) do
-    node["m"].properties
+    tags = %{tags: NeoHelper.extract_tags(node["m"])}
+
+    match = node["m"].properties
     |> Helpers.atomize_keys
+
+    struct(Match, Map.merge(match, tags))
   end
 end

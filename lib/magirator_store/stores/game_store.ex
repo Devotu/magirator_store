@@ -6,10 +6,8 @@ defmodule MagiratorStore.Stores.GameStore do
 
   import MagiratorStore.Stores.IdStore
 
-  def create( game ) do
-    
+  def create( game ) do   
     { :ok, generated_id } = next_id()
-
     tags = NeoHelper.as_label_line(game.tags)
 
     query = """
