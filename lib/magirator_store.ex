@@ -13,9 +13,11 @@ defmodule MagiratorStore do
   defdelegate create_player(name, user_is), to: PlayerStore, as: :create
   defdelegate list_players(), to: PlayerStore, as: :select_all
   defdelegate get_player(player_id), to: PlayerStore, as: :select_by_id
+  defdelegate get_deck_creator(deck_id), to: PlayerStore, as: :select_by_deck
   
   defdelegate create_deck(deck, player_id), to: DeckStore, as: :create
   defdelegate list_decks(), to: DeckStore, as: :select_all
+  defdelegate list_decks(params_map), to: DeckStore, as: :select_all
   defdelegate get_deck(deck_id), to: DeckStore, as: :select_by_id
   defdelegate update_deck_tier(deck_id, new_state), to: DeckStore, as: :update_tier
   
