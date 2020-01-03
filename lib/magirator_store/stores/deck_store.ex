@@ -98,6 +98,23 @@ defmodule MagiratorStore.Stores.DeckStore do
     |> Helpers.return_as_tuple
   end
 
+  def select_all(%{constructed_by: player_id}) when is_number player_id do
+    
+    query = """
+    MATCH 
+      (d:Deck)-[:Currently]->(data:Data),
+      (d)<-[:Constructed]-(p:Player)
+    WHERE
+      p.id = #{player_id}
+    RETURN 
+      d, data
+    """
+    
+    Bolt.query!(Bolt.conn, query)
+    |> nodes_to_decks
+    |> Helpers.return_as_tuple
+  end
+
 
   def update_tier(deck_id, %{tier: tier, delta: delta}) when is_number (deck_id + tier + delta) do
     query = """

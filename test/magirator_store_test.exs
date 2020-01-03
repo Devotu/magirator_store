@@ -36,6 +36,15 @@ defmodule MagiratorStoreTest do
   end
 
 
+  test "Select decks by player" do
+    { status, data } = list_decks(%{constructed_by: 10})
+    assert :ok == status
+    assert is_list data
+    assert not Enum.empty? data
+    assert 2 >= Enum.count data
+  end
+
+
   test "Create game" do
     game = %Game{ 
       conclusion: "VICTORY", 
@@ -96,6 +105,13 @@ defmodule MagiratorStoreTest do
     assert :ok == status
     assert is_list data
     assert not Enum.empty? data
+  end
+
+
+  test "Select deck creator" do
+    { status, data } = get_deck_creator(20)
+    assert :ok == status
+    assert %MagiratorStore.Structs.Player{id: 10, name: "Erlango"} == data
   end
 
 
