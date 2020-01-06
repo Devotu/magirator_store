@@ -57,6 +57,20 @@ defmodule MagiratorStoreTest do
     assert is_number id
   end
 
+  #id
+  test "Select game by id" do
+    { status, data } = get_game 45
+    assert :ok == status
+    assert data.conclusion == "VICTORY"
+    assert data.tags == ["TIER"]
+  end
+  
+  test "Select game not exist" do
+    { status, data } = get_game 99
+    assert :error == status
+    assert :not_found == data
+  end
+
 
   test "Select deck by id" do
     { status, data } = get_deck 20

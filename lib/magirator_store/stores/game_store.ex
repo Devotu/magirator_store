@@ -33,6 +33,23 @@ defmodule MagiratorStore.Stores.GameStore do
     end
   end
 
+
+  def select_by_id( game_id ) do
+    query = """
+    MATCH 
+      (g:Game) 
+    WHERE 
+      g.id = #{ game_id } 
+    RETURN 
+      g
+    """
+    
+    Bolt.query!(Bolt.conn, query)
+    |> nodes_to_games
+    |> Helpers.return_expected_single
+  end
+
+
   def select_all_by_match( match_id ) do
 
     query = """
@@ -56,7 +73,13 @@ defmodule MagiratorStore.Stores.GameStore do
   end
 
   defp node_to_game( node ) do
+    tags = extract_tags(node["g"])
     node["g"].properties
     |> Helpers.atomize_keys
+    |> Map.put(:tags, tags)
+  end
+
+  defp extract_tags(%{labels: labels}) do
+    Enum.filter(labels, fn(l)-> l == "TIER" || l == "ARENA" end)
   end
 end

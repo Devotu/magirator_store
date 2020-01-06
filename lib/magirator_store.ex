@@ -22,6 +22,7 @@ defmodule MagiratorStore do
   defdelegate update_deck_tier(deck_id, new_state), to: DeckStore, as: :update_tier
   
   defdelegate create_game(game), to: GameStore, as: :create
+  defdelegate get_game(game_id), to: GameStore, as: :select_by_id
   defdelegate get_games_in_match(match_id), to: GameStore, as: :select_all_by_match
 
   defdelegate add_result(result), to: ResultStore, as: :add
