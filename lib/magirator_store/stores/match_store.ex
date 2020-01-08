@@ -43,7 +43,7 @@ defmodule MagiratorStore.Stores.MatchStore do
         m.id as id;
     """
     
-    result = Bolt.query!(Bolt.conn, query)
+    %{results: result} = Bolt.query!(Bolt.conn, query)
     [ row ] = result
     { updated_id } = { row["id"] }
 
@@ -86,9 +86,9 @@ defmodule MagiratorStore.Stores.MatchStore do
     DETACH DELETE m,g,r,p
     """
 
-    result = Bolt.query!(Bolt.conn, query)
+    %{stats: stats} = Bolt.query!(Bolt.conn, query)
 
-    case result["nodes-deleted"] do
+    case stats["nodes-deleted"] do
       n when n > 0 ->
         {:ok}
       _ ->

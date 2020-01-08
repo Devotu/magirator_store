@@ -13,6 +13,13 @@ defmodule MagiratorStore.NeoHelper do
     Enum.join([":", upcase])
   end
 
+  def as_label(label) when is_bitstring label do
+    upcase = label
+    |> String.upcase()
+
+    Enum.join([":", upcase])
+  end
+
   def as_label_line(params) do
     params
     |> as_labels()

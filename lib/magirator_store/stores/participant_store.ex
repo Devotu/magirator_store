@@ -29,7 +29,7 @@ defmodule MagiratorStore.Stores.ParticipantStore do
       RETURN pt.id as id;
     """
     
-    result = Bolt.query!(Bolt.conn, query)
+    %{results: result} = Bolt.query!(Bolt.conn, query)
     [ row ] = result
     { created_id } = { row["id"] }
 

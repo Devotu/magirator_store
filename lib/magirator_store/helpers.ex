@@ -48,7 +48,8 @@ defmodule MagiratorStore.Helpers do
   end
 
 
-  def return_result_id(result) do
+  def return_result_id(response) do
+    %{results: result} = response
     [ row ] = result
     { created_id } = { row["id"] }
     created_id

@@ -18,7 +18,7 @@ defmodule MagiratorStore.Stores.UserStore do
         u.id as id;
     """
     
-    result = Bolt.query!(Bolt.conn, query)
+    %{results: result} = Bolt.query!(Bolt.conn, query)
     [ row ] = result
     { created_id } = { row["id"] }
 

@@ -11,7 +11,7 @@ defmodule MagiratorStore.Stores.IdStore do
         RETURN id.count AS generated_id 
         """
         
-        result = Bolt.query!(Bolt.conn, query)
+        %{results: result} = Bolt.query!(Bolt.conn, query)
         [ row ] = result
         [{ id }] = [ { row["generated_id"] } ]
         { :ok, id }
